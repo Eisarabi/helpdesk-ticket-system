@@ -1,8 +1,7 @@
 # HelpDesk Ticket System
 
 A full-stack support ticket management application built as a portfolio project. It combines a layered Spring Boot REST API with a responsive Vue dashboard for managing a ticket from creation through resolution.
-<img width="2556" height="1188" alt="image" src="https://github.com/user-attachments/assets/6cfe9b70-5fa4-4cec-a8ce-00620c93b262" />
-
+![HelpDesk Dashboard](https://github.com/user-attachments/assets/6cfe9b70-5fa4-4cec-a8ce-00620c93b262)
 ## Features
 
 - Create, view, update, and delete support tickets
@@ -140,3 +139,10 @@ npm run build
 - Ticket assignment, categories, comments, and attachments
 - Pagination and free-text search
 - PostgreSQL and containerized deployment
+  
+## Author
+
+**Eisa Rabinezhad**  
+Computer Science student at Hochschule Bochum
+
+GitHub: https://github.com/Eisarabi
