@@ -1,0 +1,28 @@
+# Java / Spring Boot
+target/
+*.class
+*.jar
+
+# Node / Vue
+node_modules/
+dist/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# IntelliJ
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Environment
+.env
+.env.local
+
+# Operating System
+.DS_Store
+Thumbs.db
