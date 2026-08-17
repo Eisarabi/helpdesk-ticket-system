@@ -1,8 +1,6 @@
 package com.eisarabi.helpdesk.ticket;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,11 +11,9 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Column(nullable = false)
+    @Column(nullable = false, length = 120)
     private String title;
 
-    @NotBlank
     @Column(nullable = false, length = 2000)
     private String description;
 
@@ -32,6 +28,9 @@ public class Ticket {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
     public Ticket() {
     }
 
@@ -44,7 +43,14 @@ public class Ticket {
 
     @PrePersist
     public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -85,5 +91,9 @@ public class Ticket {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }

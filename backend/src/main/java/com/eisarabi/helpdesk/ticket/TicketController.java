@@ -3,70 +3,47 @@ package com.eisarabi.helpdesk.ticket;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/tickets")
 public class TicketController {
 
-    private final TicketRepository ticketRepository;
+    private final TicketService ticketService;
 
-    public TicketController(TicketRepository ticketRepository) {
-        this.ticketRepository = ticketRepository;
+    public TicketController(TicketService ticketService) {
+        this.ticketService = ticketService;
     }
 
     @GetMapping
-    public List<Ticket> getAllTickets() {
-        return ticketRepository.findAll();
+    public List<TicketResponse> getAllTickets(
+            @RequestParam(required = false) TicketStatus status,
+            @RequestParam(required = false) TicketPriority priority) {
+        return ticketService.findAll(status, priority);
     }
 
     @GetMapping("/{id}")
-    public Ticket getTicketById(@PathVariable Long id) {
-        return ticketRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Ticket not found"
-                ));
+    public TicketResponse getTicketById(@PathVariable Long id) {
+        return ticketService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Ticket createTicket(@Valid @RequestBody Ticket ticket) {
-        return ticketRepository.save(ticket);
+    public TicketResponse createTicket(@Valid @RequestBody TicketRequest ticket) {
+        return ticketService.create(ticket);
     }
 
     @PutMapping("/{id}")
-    public Ticket updateTicket(
+    public TicketResponse updateTicket(
             @PathVariable Long id,
-            @Valid @RequestBody Ticket updatedTicket) {
-
-        Ticket ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Ticket not found"
-                ));
-
-        ticket.setTitle(updatedTicket.getTitle());
-        ticket.setDescription(updatedTicket.getDescription());
-        ticket.setPriority(updatedTicket.getPriority());
-        ticket.setStatus(updatedTicket.getStatus());
-
-        return ticketRepository.save(ticket);
+            @Valid @RequestBody TicketRequest updatedTicket) {
+        return ticketService.update(id, updatedTicket);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTicket(@PathVariable Long id) {
 
-        if (!ticketRepository.existsById(id)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Ticket not found"
-            );
-        }
-
-        ticketRepository.deleteById(id);
+        ticketService.delete(id);
     }
 }
